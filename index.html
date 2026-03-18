@@ -411,27 +411,28 @@
 
   // --- 4. ฟังก์ชันเสริม (Code Generation & Reset) ---
 
-  function generateCode() {
-    const code = Math.floor(100000 + Math.random() * 900000);
-    
-    // บันทึกรหัสลง Sheet (ส่งแบบเงียบๆ)
-    fetch(`${WEB_APP_URL}?action=saveCode&code=${code}`, { mode: 'no-cors' });
+    function generateCode() {
+  const code = Math.floor(100000 + Math.random() * 900000);
+  
+  // ส่งคำสั่งไปที่ Google ให้บันทึกลงชีต Lucky Draw
+  fetch(`${WEB_APP_URL}?action=saveCode&code=${code}`, { 
+    mode: 'no-cors' 
+  });
 
-    Swal.fire({
-      title: 'ขอบคุณที่ร่วมแสดงความคิดเห็น!',
-      html: `รหัสของคุณคือ : <strong style="color: red; font-size: 22px;">${code}</strong>`,
-      icon: 'success',
-      confirmButtonText: 'OK'
-    }).then(() => {
-      location.reload(); 
-    });
-  }
+  // แสดงผลให้ผู้ใช้เห็น
+  Swal.fire({
+    title: 'ขอบคุณที่ร่วมแสดงความคิดเห็น!',
+    html: `รหัสของคุณคือ : <strong style="color: red; font-size: 22px;">${code}</strong>`,
+    icon: 'success',
+    confirmButtonText: 'OK'
+  }).then(() => {
+    location.reload(); // รีโหลดเพื่อเริ่มใหม่
+  });
+}
 
   function goToLineAds() {
     window.open('https://lin.ee/w9op4Hm', '_blank');
   }
 </script>
-
-
   </body>
 </html>
