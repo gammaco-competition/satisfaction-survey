@@ -414,19 +414,45 @@
     function generateCode() {
   const code = Math.floor(100000 + Math.random() * 900000);
   
-  // ส่งคำสั่งไปที่ Google ให้บันทึกลงชีต Lucky Draw
-  fetch(`${WEB_APP_URL}?action=saveCode&code=${code}`, { 
-    mode: 'no-cors' 
-  });
+  // บันทึกรหัสลง Sheet (ส่งแบบเงียบๆ)
+  fetch(`${WEB_APP_URL}?action=saveCode&code=${code}`, { mode: 'no-cors' });
 
-  // แสดงผลให้ผู้ใช้เห็น
   Swal.fire({
     title: 'ขอบคุณที่ร่วมแสดงความคิดเห็น!',
     html: `รหัสของคุณคือ : <strong style="color: red; font-size: 22px;">${code}</strong>`,
     icon: 'success',
     confirmButtonText: 'OK'
-  }).then(() => {
-    location.reload(); // รีโหลดเพื่อเริ่มใหม่
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // --- ส่วนที่แก้ไข: เปลี่ยนหน้าจอเป็นสีขาวและโชว์ข้อความ 2 ภาษา ---
+      document.body.innerHTML = `
+        <div style="
+          display: flex; 
+          flex-direction: column; /* จัดเรียงเป็นแถวตั้ง */
+          justify-content: center; 
+          align-items: center; 
+          height: 100vh; 
+          width: 100vw; 
+          background-color: white; 
+          margin: 0;
+          position: fixed;
+          top: 0;
+          left: 0;
+          z-index: 9999;
+          font-family: 'Prompt', sans-serif; /* ใช้ฟอนต์เดิม */
+        ">
+          <h1 style="color: #1fa87a; text-align: center; font-size: 32px; margin-bottom: 10px;">
+            ขอขอบคุณที่ร่วมทำแบบสอบถาม
+          </h1>
+          
+          <h3 style="color: #555; text-align: center; font-weight: 400; font-size: 20px; margin-top: 0;">
+            Thank you for completing our survey.
+          </h3>
+        </div>
+      `;
+      // ลบพื้นหลังที่เป็น gradient ออกเพื่อให้ขาวสนิท
+      document.body.style.background = "white";
+    }
   });
 }
 
