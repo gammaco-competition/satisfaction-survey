@@ -29,7 +29,7 @@
       background: linear-gradient(135deg, #1fa87a, #35d09f);
       padding: 30px 20px;
       color: white;
-      text-align: center;
+      text-align: center; /* ข้อความหลักยังอยู่กึ่งกลาง */
     }
 
     .section-banner {
@@ -70,34 +70,21 @@
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
     }
 
-    #btn2 {
-      border-radius: 30px;
-      padding: 15px 40px;
-    }
-    
-    .visitor-badge {
-      background-color: #343a40;
-      color: #fff;
-      padding: 8px 15px;
-      border-radius: 50px;
-      font-size: 0.85rem;
-      display: inline-block;
-      margin-bottom: 15px;
+    .visitor-text {
+      font-size: 0.9rem;
+      color: #6c757d;
+      margin-top: 15px;
+      display: block;
     }
 
-    /* จัดวาง Version และ Visitor ให้ขนานกัน */
-    .footer-info {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 20px;
+    /* สไตล์ Version ชิดซ้าย */
+    .header-version {
+      font-size: 0.7rem;
+      opacity: 0.7;
       margin-top: 10px;
-    }
-
-    .version-text {
-      font-size: 0.75rem;
-      color: #adb5bd;
+      display: block;
       font-weight: 300;
+      text-align: left; /* บังคับชิดซ้าย */
     }
   </style>
 </head>
@@ -109,13 +96,15 @@
       <div class="card-header-custom">
         <p class="h3 mb-3 text-center">แบบสอบถามความพึงพอใจหลังจัดกิจกรรม / Satisfaction Survey</p>
         <p class="h5 mb-2 text-center">บริษัท แกมมาโก้ (ประเทศไทย) จำกัด</p>
-        <p class="h6 mb-1 text-center" style="font-size: 0.85rem; opacity: 0.9;">
+        <p class="h6 mb-0 text-center" style="font-size: 0.85rem; opacity: 0.9;">
           122, 123 หมู่ที่ 1 ถนนราชพฤกษ์ ตำบลบางขนุน อำเภอบางกรวย จังหวัดนนทบุรี 11130. โทร : 02-459-4731-8
         </p>
+        <span class="header-version">Version 1.5.4 (Updated: 2026-03-19)</span>
       </div>
 
       <div class="p-4 p-md-5">
         <form id="myForm" onsubmit="submitForm(event)">
+
           <div class="row g-3 my-3">
             <div class="form-group col-md-4">
               <label class="fw-bold mb-2" for="colA"><i class="fa-solid fa-trophy text-success"></i> การแข่งขัน / Competition</label>
@@ -131,7 +120,10 @@
             </div>
           </div>
 
-          <div class="section-banner"><h4 class="fw-bold mb-0" style="font-size: 1.2rem;">1. สถานภาพของผู้ประเมิน / Participant Profile</h4></div>
+          <div class="section-banner">
+            <h4 class="fw-bold mb-0" style="font-size: 1.2rem;">1. สถานภาพของผู้ประเมิน / Participant Profile</h4>
+          </div>
+
           <div class="row my-3 px-2">
             <div class="form-group col-md-12">
               <p class="fw-bold mb-2"><i class="fa-solid fa-venus-double text-primary"></i> 1.1 - เพศ / Gender</p>
@@ -170,7 +162,10 @@
             </div>
           </div>
 
-          <div class="section-banner"><h4 class="fw-bold mb-0" style="font-size: 1.2rem;">2. ข้อมูลสอบถามความพึงพอใจ / Feedback & Satisfaction</h4></div>
+          <div class="section-banner">
+            <h4 class="fw-bold mb-0" style="font-size: 1.2rem;">2. ข้อมูลสอบถามความพึงพอใจ / Feedback & Satisfaction</h4>
+          </div>
+
           <div class="rating-container px-2">
              <p class="small text-danger fw-bold">(5 = มากที่สุด, 4 = มาก, 3 = ปานกลาง, 2 = น้อย, 1 = น้อยที่สุด)</p>
              <div class="row rating-row align-items-center"><div class="col-md-7"><p class="mb-0 fw-bold">2.1.1 ระยะเวลาในการประชาสัมพันธ์กิจกรรมล่วงหน้า ?</p></div><div class="col-md-5 d-flex justify-content-between"><input type="radio" name="data5" value="5" required> 5 <input type="radio" name="data5" value="4"> 4 <input type="radio" name="data5" value="3"> 3 <input type="radio" name="data5" value="2"> 2 <input type="radio" name="data5" value="1"> 1</div></div>
@@ -185,6 +180,8 @@
             <div class="row g-2 ps-2">
               <div class="col-md-6 form-check"><input class="form-check-input" type="checkbox" name="data10" value="สื่อสิ่งพิมพ์"><label class="form-check-label">สื่อสิ่งพิมพ์ (Brochure / Poster)</label></div>
               <div class="col-md-6 form-check"><input class="form-check-input" type="checkbox" name="data10" value="Internet"><label class="form-check-label">Internet / Facebook / Website</label></div>
+              <div class="col-md-6 form-check"><input class="form-check-input" type="checkbox" name="data10" value="พนักงานขาย"><label class="form-check-label">พนักงานขาย</label></div>
+              <div class="col-md-6 form-check"><input class="form-check-input" type="checkbox" name="data10" value="อื่น ๆ"><label class="form-check-label">อื่น ๆ</label></div>
             </div>
           </div>
 
@@ -192,6 +189,7 @@
           <div class="row g-3 px-2">
             <div class="col-12"><textarea class="form-control" rows="2" id="data11" placeholder="3.1 จุดเด่นที่ท่านประทับใจ"></textarea></div>
             <div class="col-12"><textarea class="form-control" rows="2" id="data12" placeholder="3.2 จุดที่ควรปรับปรุง"></textarea></div>
+            <div class="col-12"><textarea class="form-control" rows="2" id="data13" placeholder="3.3 ข้อเสนอแนะ"></textarea></div>
           </div>
 
           <div class="text-center mt-5">
@@ -201,22 +199,18 @@
             <div class="mt-4">
               <p class="text-primary fw-bold mb-1 fs-4">เงื่อนไขการรับรางวัล</p>
               <p class="text-primary fw-bold mb-1">โปรดบันทึกหน้าจอไว้เป็นหลักฐานเพื่อรับรางวัล</p>
-              <p class="text-danger fw-bold small">(ขอสงวนสิทธิสำหรับผู้ที่อยู่ภายในงานเท่านั้น)</p>
+              <p class="text-danger fw-bold small mb-0">(ขอสงวนสิทธิสำหรับผู้ที่อยู่ภายในงานเท่านั้น)</p>
+              
+              <span class="visitor-text">
+                <i class="fa-solid fa-users-viewfinder me-1"></i> ผู้เข้าใช้งาน: <span id="visitorCount" class="fw-bold">...</span> ท่าน
+              </span>
             </div>
           </div>
         </form>
       </div>
 
-      <div class="bg-light p-3 border-top">
-        <div class="footer-info">
-          <div class="visitor-badge shadow-sm mb-0">
-            <i class="fa-solid fa-users me-2"></i> ผู้เข้าชมทั้งหมด: <span id="visitorCount">...</span> ท่าน
-          </div>
-          <div class="version-text">
-            Version 1.5.0 (Updated: 2026-03-19)
-          </div>
-        </div>
-        <p class="text-center mt-3 mb-0 text-muted small">F-SA-030/02 | Organized by Gammaco (Thailand) Co., LTD.</p>
+      <div class="bg-light p-3 text-center border-top">
+        <p class="mb-0 text-muted small">F-SA-030/02 | Organized by Gammaco (Thailand) Co., LTD.</p>
       </div>
     </div>
   </div>
@@ -226,13 +220,8 @@
     let userIP = "Unknown";
 
     window.onload = () => {
-      // ดึง IP (ฟีเจอร์ใหม่)
       fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => userIP = d.ip).catch(() => {});
-      
-      // ดึงข้อมูลการแข่งขันล่าสุด
       fetch(`${WEB_APP_URL}?action=getLatest`).then(r => r.json()).then(showLastRowData);
-      
-      // อัปเดตตัวนับผู้เข้าชม (บันทึกลงชีต Config)
       fetch(`${WEB_APP_URL}?action=updateVisitors`).then(r => r.json()).then(d => {
         document.getElementById("visitorCount").innerText = d.count.toLocaleString();
       });
@@ -266,7 +255,7 @@
         data9: $('input[name="data9"]:checked').val(), 
         data10: $('input[name="data10"]:checked').map((i, el) => $(el).val()).get().join(','),
         data11: $('#data11').val(), data12: $('#data12').val(), data13: $('#data13').val(),
-        user_ip: userIP // ส่ง IP ไปบันทึก
+        user_ip: userIP
       };
       fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(obj) })
       .then(() => {
