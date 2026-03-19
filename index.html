@@ -23,7 +23,6 @@
       max-width: 1000px;
       margin: auto;
       overflow: hidden;
-      position: relative; /* สำหรับจัดตำแหน่ง Version */
     }
 
     .card-header-custom {
@@ -71,6 +70,7 @@
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
     }
 
+    /* ตัวนับผู้เข้าใช้งาน สไตล์ Badge (เหมือนอันแรกสุด) */
     .visitor-badge {
       background-color: #343a40;
       color: #fff;
@@ -81,15 +81,14 @@
       margin-bottom: 10px;
     }
 
-    /* สไตล์ Version มุมบนซ้ายสุด นอกแถบเขียว */
+    /* VersionText อยู่นอกแถบสีเขียว */
     .version-info {
-      position: absolute;
-      top: 8px;
-      left: 15px;
-      font-size: 0.7rem;
-      color: rgba(255, 255, 255, 0.7); /* ให้กลืนกับพื้นหลังเขียวเล็กน้อยแต่ยังเห็นชัด */
-      z-index: 10;
-      font-weight: 300;
+      text-align: right;
+      font-size: 0.75rem;
+      color: #adb5bd;
+      margin-top: 20px;
+      margin-bottom: -15px;
+      padding-right: 5px;
     }
   </style>
 </head>
@@ -97,10 +96,6 @@
 <body>
   <div class="container py-4">
     <div class="main-card shadow-lg">
-      
-      <div class="version-info">
-        Version 1.5.5 (Updated: 2026-03-19)
-      </div>
 
       <div class="card-header-custom">
         <p class="h3 mb-3 text-center">แบบสอบถามความพึงพอใจหลังจัดกิจกรรม / Satisfaction Survey</p>
@@ -111,6 +106,10 @@
       </div>
 
       <div class="p-4 p-md-5">
+        <div class="version-info">
+          Version 1.5.5 (Updated: 2026-03-19)
+        </div>
+
         <form id="myForm" onsubmit="submitForm(event)">
           <div class="row g-3 my-3">
             <div class="form-group col-md-4">
