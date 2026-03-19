@@ -23,6 +23,7 @@
       max-width: 1000px;
       margin: auto;
       overflow: hidden;
+      position: relative; /* สำหรับจัดตำแหน่ง Version */
     }
 
     .card-header-custom {
@@ -70,7 +71,6 @@
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
     }
 
-    /* ตัวนับผู้เข้าใช้งาน สไตล์ Badge */
     .visitor-badge {
       background-color: #343a40;
       color: #fff;
@@ -81,7 +81,7 @@
       margin-bottom: 10px;
     }
 
-    /* VersionText อยู่นอกแถบสีเขียว */
+    /* สไตล์ Version มุมบนซ้ายสุด นอกแถบเขียว */
     .version-info {
       position: absolute;
       top: 8px;
@@ -97,6 +97,10 @@
 <body>
   <div class="container py-4">
     <div class="main-card shadow-lg">
+      
+      <div class="version-info">
+        Version 1.5.5 (Updated: 2026-03-19)
+      </div>
 
       <div class="card-header-custom">
         <p class="h3 mb-3 text-center">แบบสอบถามความพึงพอใจหลังจัดกิจกรรม / Satisfaction Survey</p>
@@ -107,10 +111,6 @@
       </div>
 
       <div class="p-4 p-md-5">
-        <div class="version-info">
-          Version 1.5.6 (Updated: 2026-03-19)
-        </div>
-
         <form id="myForm" onsubmit="submitForm(event)">
           <div class="row g-3 my-3">
             <div class="form-group col-md-4">
@@ -212,9 +212,9 @@
         </form>
       </div>
 
-      <i class="fa-solid fa-users-viewfinder me-2"></i> ผู้เข้าใช้งาน: <span id="visitorCount" class="fw-bold">...</span> ท่าน
       <div class="bg-light p-3 text-center border-top">
         <div class="visitor-badge shadow-sm">
+          <i class="fa-solid fa-users-viewfinder me-2"></i> ผู้เข้าใช้งาน: <span id="visitorCount" class="fw-bold">...</span> ท่าน
         </div>
         <p class="mb-0 text-muted small">F-SA-030/02 | Organized by Gammaco (Thailand) Co., LTD.</p>
       </div>
