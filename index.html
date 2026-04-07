@@ -143,7 +143,7 @@
         </div>
 
         <div class="version-info">
-          Version 1.6.4 (Updated: 2026-04-07)
+          Version 1.6.6 (Updated: 2026-04-07)
         </div>
 
         <form id="myForm" onsubmit="submitForm(event)">
@@ -377,12 +377,13 @@
     }
 
     window.onload = () => {
-      // --- จุดที่แก้ไข: ดึงค่าจาก URL ให้เรียบร้อยก่อนทำอย่างอื่น ---
       const urlParams = new URLSearchParams(window.location.search);
+      
+      // แก้ไข: ดึงค่าให้ตรงกับที่ส่งมาจาก LINE Bot (Bot ส่ง userProfile)
       lineUserId = urlParams.get('userId') || "Unknown";
-      lineUserName = urlParams.get('userName') || "Unknown";
+      lineUserName = urlParams.get('userProfile') || "Unknown"; 
 
-      console.log("Detected User:", lineUserId, lineUserName); // ตรวจสอบใน Console (F12) ว่าดึงค่าได้ไหม
+      console.log("Detected User:", lineUserId, lineUserName);
 
       fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => userIP = d.ip).catch(() => {});
       fetch(`${WEB_APP_URL}?action=getLatest`).then(r => r.json()).then(showLastRowData);
@@ -427,9 +428,9 @@
         data12: $('#data12').val(), 
         data13: $('#data13').val(),
         user_ip: userIP,
-        // --- เพิ่มเติม: บันทึก ID ลงในฐานข้อมูลหลัก (Data) ไปด้วยเลยป้องกันพลาด ---
-        line_id: lineUserId 
+        line_id: lineUserId  // ส่งไอดีเข้าชีต Data หลักด้วย
       };
+      
       fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(obj) })
       .then(() => {
         Swal.fire({ icon: 'success', title: dict[currentLang].swalSuccess, showConfirmButton: false, timer: 1500 }).then(generateCode);
@@ -439,11 +440,11 @@
     function generateCode() {
       const code = Math.floor(100000 + Math.random() * 900000);
       
-      // บันทึก Lucky Code พร้อมส่ง userId และ userName ไปที่ GAS
+      // ส่งค่าไปยัง GAS: userId และ userName (ตรงตามที่ doGet ใน GAS รอรับ)
       const saveUrl = `${WEB_APP_URL}?action=saveCode&code=${code}&userId=${lineUserId}&userName=${encodeURIComponent(lineUserName)}`;
       
       fetch(saveUrl, { mode: 'no-cors' })
-      .then(() => console.log("Code saved to sheets"));
+      .then(() => console.log("Code saved successfully"));
 
       Swal.fire({ 
         title: 'Lucky Code', 
