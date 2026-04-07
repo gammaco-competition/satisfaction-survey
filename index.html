@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="th">
 
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     body {
@@ -23,11 +25,39 @@
       max-width: 1000px;
       margin: auto;
       overflow: hidden;
+      position: relative;
+    }
+
+    /* Language Switcher Style */
+    .lang-switcher {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 5px 10px;
+      border-radius: 30px;
+      backdrop-filter: blur(5px);
+    }
+
+    .lang-btn {
+      cursor: pointer;
+      font-size: 1.2rem;
+      margin: 0 5px;
+      opacity: 0.6;
+      transition: 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .lang-btn.active {
+      opacity: 1;
+      transform: scale(1.2);
     }
 
     .card-header-custom {
       background: linear-gradient(135deg, #1fa87a, #35d09f);
-      padding: 30px 20px;
+      padding: 40px 20px 30px 20px;
       color: white;
       text-align: center;
     }
@@ -44,7 +74,6 @@
       border-radius: 12px;
       padding: 10px 15px;
       border: 1px solid #ddd;
-      transition: 0.3s;
     }
 
     .rating-row {
@@ -70,7 +99,6 @@
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
     }
 
-    /* ตัวนับผู้เข้าใช้งาน สไตล์ Badge (เหมือนอันแรกสุด) */
     .visitor-badge {
       background-color: #343a40;
       color: #fff;
@@ -81,7 +109,6 @@
       margin-bottom: 10px;
     }
 
-    /* VersionText อยู่นอกแถบสีเขียว */
     .version-info {
       text-align: right;
       font-size: 0.75rem;
@@ -96,116 +123,126 @@
 <body>
   <div class="container py-4">
     <div class="main-card shadow-lg">
+      
+      <!-- Language Buttons -->
+      <div class="lang-switcher">
+        <span class="lang-btn active" onclick="changeLang('th')" id="btn-th" title="ไทย">🇹🇭</span>
+        <span class="lang-btn" onclick="changeLang('en')" id="btn-en" title="English">🇺🇸</span>
+        <span class="lang-btn" onclick="changeLang('cn')" id="btn-cn" title="中文">🇨🇳</span>
+      </div>
 
       <div class="card-header-custom">
-        <p class="h3 mb-3 text-center">แบบสอบถามความพึงพอใจหลังจัดกิจกรรม / Satisfaction Survey</p>
-        <p class="h5 mb-2 text-center">บริษัท แกมมาโก้ (ประเทศไทย) จำกัด</p>
-        <p class="h6 mb-0 text-center" style="font-size: 0.85rem; opacity: 0.9;">
-          122, 123 หมู่ที่ 1 ถนนราชพฤกษ์ ตำบลบางขนุน อำเภอบางกรวย จังหวัดนนทบุรี 11130. โทร : 02-459-4731-8
+        <p class="h3 mb-3 text-center" id="text-title">แบบสอบถามความพึงพอใจหลังจัดกิจกรรม</p>
+        <p class="h5 mb-2 text-center" id="text-company">บริษัท แกมมาโก้ (ประเทศไทย) จำกัด</p>
+        <p class="h6 mb-0 text-center" style="font-size: 0.85rem; opacity: 0.9;" id="text-address">
+          122, 123 หมู่ที่ 1 ถนนราชพฤกษ์ ตำบลบางขนุน อำเภอบางกรวย จังหวัดนนทบุรี 11130
         </p>
       </div>
 
       <div class="p-4 p-md-5">
-        <div class="version-info">
-          Version 1.5.5 (Updated: 2026-03-19)
-        </div>
+        <div class="version-info">Version 1.5.5 (2026-03-19)</div>
 
         <form id="myForm" onsubmit="submitForm(event)">
+          <!-- Event Info -->
           <div class="row g-3 my-3">
             <div class="form-group col-md-4">
-              <label class="fw-bold mb-2" for="colA"><i class="fa-solid fa-trophy text-success"></i> การแข่งขัน / Competition</label>
-              <select class="form-control" id="colA"><option value="" selected>กำลังดึงข้อมูล...</option></select>
+              <label class="fw-bold mb-2"><i class="fa-solid fa-trophy text-success"></i> <span id="label-comp">การแข่งขัน</span></label>
+              <select class="form-control" id="colA"><option value="" selected id="text-loading1">กำลังดึงข้อมูล...</option></select>
             </div>
             <div class="form-group col-md-5">
-              <label class="fw-bold mb-2" for="colB"><i class="fa-solid fa-location-dot text-success"></i> สถานที่ / Venue</label>
-              <select class="form-control" id="colB"><option value="" selected>กำลังดึงข้อมูล...</option></select>
+              <label class="fw-bold mb-2"><i class="fa-solid fa-location-dot text-success"></i> <span id="label-venue">สถานที่</span></label>
+              <select class="form-control" id="colB"><option value="" selected id="text-loading2">กำลังดึงข้อมูล...</option></select>
             </div>
             <div class="form-group col-md-3">
-              <label class="fw-bold mb-2" for="colC"><i class="fa-solid fa-calendar-days text-success"></i> วันแข่งขัน / Date</label>
-              <select class="form-control" id="colC"><option value="" selected>กำลังดึงข้อมูล...</option></select>
+              <label class="fw-bold mb-2"><i class="fa-solid fa-calendar-days text-success"></i> <span id="label-date">วันแข่งขัน</span></label>
+              <select class="form-control" id="colC"><option value="" selected id="text-loading3">กำลังดึงข้อมูล...</option></select>
             </div>
           </div>
 
+          <!-- Section 1 -->
           <div class="section-banner">
-            <h4 class="fw-bold mb-0" style="font-size: 1.2rem;">1. สถานภาพของผู้ประเมิน / Participant Profile</h4>
+            <h4 class="fw-bold mb-0" style="font-size: 1.2rem;" id="sec-1">1. สถานภาพของผู้ประเมิน</h4>
           </div>
 
           <div class="row my-3 px-2">
             <div class="form-group col-md-12">
-              <p class="fw-bold mb-2"><i class="fa-solid fa-venus-double text-primary"></i> 1.1 - เพศ / Gender</p>
+              <p class="fw-bold mb-2"><i class="fa-solid fa-venus-double text-primary"></i> <span id="q-1-1">1.1 เพศ</span></p>
               <div class="d-flex flex-wrap gap-3">
-                <div class="form-check"><input class="form-check-input" type="radio" name="data2" id="id1" value="ชาย" required><label class="form-check-label" for="id1">ชาย / Male</label></div>
-                <div class="form-check"><input class="form-check-input" type="radio" name="data2" id="id2" value="หญิง"><label class="form-check-label" for="id2">หญิง / Female</label></div>
-                <div class="form-check"><input class="form-check-input" type="radio" name="data2" id="id3" value="ไม่ระบุ"><label class="form-check-label" for="id3">ไม่ระบุ / Prefer not to say</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="data2" id="id1" value="ชาย" required><label class="form-check-label" for="id1" id="opt-male">ชาย</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="data2" id="id2" value="หญิง"><label class="form-check-label" for="id2" id="opt-female">หญิง</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="data2" id="id3" value="ไม่ระบุ"><label class="form-check-label" for="id3" id="opt-none">ไม่ระบุ</label></div>
               </div>
             </div>
           </div>
 
           <div class="row my-3 px-2">
             <div class="form-group col-md-6">
-              <label class="fw-bold mb-2" for="data3"><i class="fa-solid fa-heart text-danger"></i> 1.2 - อายุ / Age</label>
+              <label class="fw-bold mb-2" for="data3"><i class="fa-solid fa-heart text-danger"></i> <span id="q-1-2">1.2 อายุ</span></label>
               <select id="data3" class="form-control" required>
-                <option selected disabled value="">- Please Select -</option>
-                <option value="ต่ำกว่า 10 ปี">Under 10 years old</option>
-                <option value="10-20 ปี">10 - 20 years old</option>
-                <option value="21-30 ปี">21 - 30 years old</option>
-                <option value="31-40 ปี">31 - 40 years old</option>
-                <option value="41-50 ปี">41 - 50 years old</option>
-                <option value="51 ปี ขึ้นไป">51 years and above</option>
+                <option selected disabled value="" id="opt-select">- กรุณาเลือก -</option>
+                <option value="ต่ำกว่า 10 ปี" id="age-1">ต่ำกว่า 10 ปี</option>
+                <option value="10-20 ปี" id="age-2">10 - 20 ปี</option>
+                <option value="21-30 ปี" id="age-3">21 - 30 ปี</option>
+                <option value="31-40 ปี" id="age-4">31 - 40 ปี</option>
+                <option value="41-50 ปี" id="age-5">41 - 50 ปี</option>
+                <option value="51 ปี ขึ้นไป" id="age-6">51 ปี ขึ้นไป</option>
               </select>
             </div>
           </div>
 
           <div class="row my-3 px-2">
             <div class="form-group col-md-12">
-              <p class="fw-bold mb-2"><i class="fa-solid fa-cog fa-spin"></i> 1.3 - Status</p>
+              <p class="fw-bold mb-2"><i class="fa-solid fa-cog fa-spin"></i> <span id="q-1-3">1.3 สถานะ</span></p>
               <div class="d-flex flex-wrap gap-3">
-                <div class="form-check"><input class="form-check-input" type="radio" name="data4" id="s1" value="ครู/อาจารย์" required><label class="form-check-label" for="s1">Teacher / Coach</label></div>
-                <div class="form-check"><input class="form-check-input" type="radio" name="data4" id="s2" value="นักเรียน/นักศึกษา"><label class="form-check-label" for="s2">Student</label></div>
-                <div class="form-check"><input class="form-check-input" type="radio" name="data4" id="s3" value="บุคคลทั่วไป"><label class="form-check-label" for="s3">General Public</label></div>
-                <div class="form-check"><input class="form-check-input" type="radio" name="data4" id="s4" value="อื่น ๆ"><label class="form-check-label" for="s4">Other</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="data4" id="s1" value="ครู/อาจารย์" required><label class="form-check-label" for="s1" id="st-1">ครู/โค้ช</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="data4" id="s2" value="นักเรียน/นักศึกษา"><label class="form-check-label" for="s2" id="st-2">นักเรียน</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="data4" id="s3" value="บุคคลทั่วไป"><label class="form-check-label" for="s3" id="st-3">บุคคลทั่วไป</label></div>
+                <div class="form-check"><input class="form-check-input" type="radio" name="data4" id="s4" value="อื่น ๆ"><label class="form-check-label" for="s4" id="st-4">อื่นๆ</label></div>
               </div>
             </div>
           </div>
 
+          <!-- Section 2 -->
           <div class="section-banner">
-            <h4 class="fw-bold mb-0" style="font-size: 1.2rem;">2. ข้อมูลสอบถามความพึงพอใจ / Feedback & Satisfaction</h4>
+            <h4 class="fw-bold mb-0" style="font-size: 1.2rem;" id="sec-2">2. ความพึงพอใจ</h4>
           </div>
 
           <div class="rating-container px-2">
-             <p class="small text-danger fw-bold">(5 = มากที่สุด, 4 = มาก, 3 = ปานกลาง, 2 = น้อย, 1 = น้อยที่สุด)</p>
-             <div class="row rating-row align-items-center"><div class="col-md-7"><p class="mb-0 fw-bold">2.1.1 ระยะเวลาในการประชาสัมพันธ์กิจกรรมล่วงหน้า ?</p></div><div class="col-md-5 d-flex justify-content-between"><input type="radio" name="data5" value="5" required> 5 <input type="radio" name="data5" value="4"> 4 <input type="radio" name="data5" value="3"> 3 <input type="radio" name="data5" value="2"> 2 <input type="radio" name="data5" value="1"> 1</div></div>
-             <div class="row rating-row align-items-center"><div class="col-md-7"><p class="mb-0 fw-bold">2.1.2 ความเหมาะสมของสถานที่จัดการแข่งขัน ?</p></div><div class="col-md-5 d-flex justify-content-between"><input type="radio" name="data6" value="5" required> 5 <input type="radio" name="data6" value="4"> 4 <input type="radio" name="data6" value="3"> 3 <input type="radio" name="data6" value="2"> 2 <input type="radio" name="data6" value="1"> 1</div></div>
-             <div class="row rating-row align-items-center"><div class="col-md-7"><p class="mb-0 fw-bold">2.1.3 ความเหมาะสมของระยะเวลาจัดการแข่งขัน ?</p></div><div class="col-md-5 d-flex justify-content-between"><input type="radio" name="data7" value="5" required> 5 <input type="radio" name="data7" value="4"> 4 <input type="radio" name="data7" value="3"> 3 <input type="radio" name="data7" value="2"> 2 <input type="radio" name="data7" value="1"> 1</div></div>
-             <div class="row rating-row align-items-center"><div class="col-md-7"><p class="mb-0 fw-bold">2.1.4 การให้ความช่วยเหลือของเจ้าหน้าที่ ?</p></div><div class="col-md-5 d-flex justify-content-between"><input type="radio" name="data8" value="5" required> 5 <input type="radio" name="data8" value="4"> 4 <input type="radio" name="data8" value="3"> 3 <input type="radio" name="data8" value="2"> 2 <input type="radio" name="data8" value="1"> 1</div></div>
-             <div class="row rating-row align-items-center"><div class="col-md-7"><p class="mb-0 fw-bold">2.1.5 การจัดกิจกรรมโดยภาพรวม ?</p></div><div class="col-md-5 d-flex justify-content-between"><input type="radio" name="data9" value="5" required> 5 <input type="radio" name="data9" value="4"> 4 <input type="radio" name="data9" value="3"> 3 <input type="radio" name="data9" value="2"> 2 <input type="radio" name="data9" value="1"> 1</div></div>
+             <p class="small text-danger fw-bold" id="rating-hint">(5 = มากที่สุด, 1 = น้อยที่สุด)</p>
+             <div class="row rating-row align-items-center"><div class="col-md-7"><p class="mb-0 fw-bold" id="q-2-1">2.1.1 ระยะเวลาในการประชาสัมพันธ์กิจกรรมล่วงหน้า ?</p></div><div class="col-md-5 d-flex justify-content-between"><input type="radio" name="data5" value="5" required> 5 <input type="radio" name="data5" value="4"> 4 <input type="radio" name="data5" value="3"> 3 <input type="radio" name="data5" value="2"> 2 <input type="radio" name="data5" value="1"> 1</div></div>
+             <div class="row rating-row align-items-center"><div class="col-md-7"><p class="mb-0 fw-bold" id="q-2-2">2.1.2 ความเหมาะสมของสถานที่จัดการแข่งขัน ?</p></div><div class="col-md-5 d-flex justify-content-between"><input type="radio" name="data6" value="5" required> 5 <input type="radio" name="data6" value="4"> 4 <input type="radio" name="data6" value="3"> 3 <input type="radio" name="data6" value="2"> 2 <input type="radio" name="data6" value="1"> 1</div></div>
+             <div class="row rating-row align-items-center"><div class="col-md-7"><p class="mb-0 fw-bold" id="q-2-3">2.1.3 ความเหมาะสมของระยะเวลาจัดการแข่งขัน ?</p></div><div class="col-md-5 d-flex justify-content-between"><input type="radio" name="data7" value="5" required> 5 <input type="radio" name="data7" value="4"> 4 <input type="radio" name="data7" value="3"> 3 <input type="radio" name="data7" value="2"> 2 <input type="radio" name="data7" value="1"> 1</div></div>
+             <div class="row rating-row align-items-center"><div class="col-md-7"><p class="mb-0 fw-bold" id="q-2-4">2.1.4 การให้ความช่วยเหลือของเจ้าหน้าที่ ?</p></div><div class="col-md-5 d-flex justify-content-between"><input type="radio" name="data8" value="5" required> 5 <input type="radio" name="data8" value="4"> 4 <input type="radio" name="data8" value="3"> 3 <input type="radio" name="data8" value="2"> 2 <input type="radio" name="data8" value="1"> 1</div></div>
+             <div class="row rating-row align-items-center"><div class="col-md-7"><p class="mb-0 fw-bold" id="q-2-5">2.1.5 การจัดกิจกรรมโดยภาพรวม ?</p></div><div class="col-md-5 d-flex justify-content-between"><input type="radio" name="data9" value="5" required> 5 <input type="radio" name="data9" value="4"> 4 <input type="radio" name="data9" value="3"> 3 <input type="radio" name="data9" value="2"> 2 <input type="radio" name="data9" value="1"> 1</div></div>
           </div>
 
           <div class="mt-4 px-2">
-            <p class="fw-bold mb-3"><i class="fa-solid fa-bullhorn text-warning"></i> 2.2 ช่องทางได้รับข่าวสาร (เลือกได้มากกว่า 1)</p>
+            <p class="fw-bold mb-3"><i class="fa-solid fa-bullhorn text-warning"></i> <span id="q-2-6">2.2 ช่องทางได้รับข่าวสาร</span></p>
             <div class="row g-2 ps-2">
-              <div class="col-md-6 form-check"><input class="form-check-input" type="checkbox" name="data10" value="สื่อสิ่งพิมพ์"><label class="form-check-label">สื่อสิ่งพิมพ์ (Brochure / Poster)</label></div>
-              <div class="col-md-6 form-check"><input class="form-check-input" type="checkbox" name="data10" value="Internet"><label class="form-check-label">Internet / Facebook / Website</label></div>
-              <div class="col-md-6 form-check"><input class="form-check-input" type="checkbox" name="data10" value="พนักงานขาย"><label class="form-check-label">พนักงานขาย</label></div>
-              <div class="col-md-6 form-check"><input class="form-check-input" type="checkbox" name="data10" value="อื่น ๆ"><label class="form-check-label">อื่น ๆ</label></div>
+              <div class="col-md-6 form-check"><input class="form-check-input" type="checkbox" name="data10" value="สื่อสิ่งพิมพ์"><label class="form-check-label" id="ch-1">สื่อสิ่งพิมพ์ (Brochure)</label></div>
+              <div class="col-md-6 form-check"><input class="form-check-input" type="checkbox" name="data10" value="Internet"><label class="form-check-label" id="ch-2">Internet / Social Media</label></div>
+              <div class="col-md-6 form-check"><input class="form-check-input" type="checkbox" name="data10" value="พนักงานขาย"><label class="form-check-label" id="ch-3">พนักงานขาย</label></div>
+              <div class="col-md-6 form-check"><input class="form-check-input" type="checkbox" name="data10" value="อื่น ๆ"><label class="form-check-label" id="ch-4">อื่นๆ</label></div>
             </div>
           </div>
 
-          <div class="section-banner"><h4 class="fw-bold mb-0" style="font-size: 1.2rem;">3. ข้อคิดเห็น / Comments</h4></div>
+          <!-- Section 3 -->
+          <div class="section-banner"><h4 class="fw-bold mb-0" style="font-size: 1.2rem;" id="sec-3">3. ข้อคิดเห็น</h4></div>
           <div class="row g-3 px-2">
             <div class="col-12"><textarea class="form-control" rows="2" id="data11" placeholder="3.1 จุดเด่นที่ท่านประทับใจ"></textarea></div>
             <div class="col-12"><textarea class="form-control" rows="2" id="data12" placeholder="3.2 จุดที่ควรปรับปรุง"></textarea></div>
             <div class="col-12"><textarea class="form-control" rows="2" id="data13" placeholder="3.3 ข้อเสนอแนะ"></textarea></div>
           </div>
 
+          <!-- Footer Action -->
           <div class="text-center mt-5">
-            <button id="btn1" type="submit" class="btn btn-danger" disabled><i class="fas fa-save me-2"></i>บันทึกข้อมูล</button>
-            <button class="btn btn-danger" id="btn2" type="button" disabled style="display:none"><span class="spinner-grow spinner-grow-sm"></span> กำลังบันทึก...</button>
+            <button id="btn1" type="submit" class="btn btn-danger" disabled><i class="fas fa-save me-2"></i><span id="btn-save">บันทึกข้อมูล</span></button>
+            <button class="btn btn-danger" id="btn2" type="button" disabled style="display:none"><span class="spinner-grow spinner-grow-sm"></span> <span id="btn-saving">กำลังบันทึก...</span></button>
 
             <div class="mt-4">
-              <p class="text-primary fw-bold mb-1 fs-4">เงื่อนไขการรับรางวัล</p>
-              <p class="text-primary fw-bold mb-1">โปรดบันทึกหน้าจอไว้เป็นหลักฐานเพื่อรับรางวัล</p>
-              <p class="text-danger fw-bold small">(ขอสงวนสิทธิสำหรับผู้ที่อยู่ภายในงานเท่านั้น)</p>
+              <p class="text-primary fw-bold mb-1 fs-4" id="reward-1">เงื่อนไขการรับรางวัล</p>
+              <p class="text-primary fw-bold mb-1" id="reward-2">โปรดบันทึกหน้าจอไว้เป็นหลักฐานเพื่อรับรางวัล</p>
+              <p class="text-danger fw-bold small" id="reward-3">(ขอสงวนสิทธิสำหรับผู้ที่อยู่ภายในงานเท่านั้น)</p>
             </div>
           </div>
         </form>
@@ -213,7 +250,7 @@
 
       <div class="bg-light p-3 text-center border-top">
         <div class="visitor-badge shadow-sm">
-          <i class="fa-solid fa-users-viewfinder me-2"></i> ผู้เข้าใช้งาน: <span id="visitorCount" class="fw-bold">...</span> ท่าน
+          <i class="fa-solid fa-users-viewfinder me-2"></i> <span id="v-text">ผู้เข้าใช้งาน</span>: <span id="visitorCount" class="fw-bold">...</span> <span id="v-unit">ท่าน</span>
         </div>
         <p class="mb-0 text-muted small">F-SA-030/02 | Organized by Gammaco (Thailand) Co., LTD.</p>
       </div>
@@ -223,6 +260,119 @@
   <script>
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwInfkYkd_ACkGwmxutEXPKFC9LKEIzB_FUPq02TRKK3_-ceVOKTYxx_Xz563AgKP_D/exec";
     let userIP = "Unknown";
+    let currentLang = "th";
+
+    // Dictionary
+    const dict = {
+      th: {
+        title: "แบบสอบถามความพึงพอใจหลังจัดกิจกรรม",
+        company: "บริษัท แกมมาโก้ (ประเทศไทย) จำกัด",
+        address: "122, 123 หมู่ที่ 1 ถนนราชพฤกษ์ ตำบลบางขนุน อำเภอบางกรวย จังหวัดนนทบุรี 11130",
+        loading: "กำลังดึงข้อมูล...",
+        labelComp: "การแข่งขัน", labelVenue: "สถานที่", labelDate: "วันแข่งขัน",
+        sec1: "1. สถานภาพของผู้ประเมิน",
+        q11: "1.1 เพศ", optMale: "ชาย", optFemale: "หญิง", optNone: "ไม่ระบุ",
+        q12: "1.2 อายุ", optSelect: "- กรุณาเลือก -",
+        age1: "ต่ำกว่า 10 ปี", age2: "10-20 ปี", age3: "21-30 ปี", age4: "31-40 ปี", age5: "41-50 ปี", age6: "51 ปี ขึ้นไป",
+        q13: "1.3 สถานะ", st1: "ครู/โค้ช", st2: "นักเรียน", st3: "บุคคลทั่วไป", st4: "อื่นๆ",
+        sec2: "2. ความพึงพอใจ", ratingHint: "(5 = มากที่สุด, 1 = น้อยที่สุด)",
+        q21: "2.1.1 ระยะเวลาในการประชาสัมพันธ์กิจกรรมล่วงหน้า ?",
+        q22: "2.1.2 ความเหมาะสมของสถานที่จัดการแข่งขัน ?",
+        q23: "2.1.3 ความเหมาะสมของระยะเวลาจัดการแข่งขัน ?",
+        q24: "2.1.4 การให้ความช่วยเหลือของเจ้าหน้าที่ ?",
+        q25: "2.1.5 การจัดกิจกรรมโดยภาพรวม ?",
+        q26: "2.2 ช่องทางได้รับข่าวสาร (เลือกได้มากกว่า 1)",
+        ch1: "สื่อสิ่งพิมพ์ (Brochure / Poster)", ch2: "Internet / Social Media", ch3: "พนักงานขาย", ch4: "อื่นๆ",
+        sec3: "3. ข้อคิดเห็น",
+        p1: "3.1 จุดเด่นที่ท่านประทับใจ", p2: "3.2 จุดที่ควรปรับปรุง", p3: "3.3 ข้อเสนอแนะ",
+        btnSave: "บันทึกข้อมูล", btnSaving: "กำลังบันทึก...",
+        reward1: "เงื่อนไขการรับรางวัล", reward2: "โปรดบันทึกหน้าจอไว้เป็นหลักฐานเพื่อรับรางวัล", reward3: "(ขอสงวนสิทธิสำหรับผู้ที่อยู่ภายในงานเท่านั้น)",
+        vText: "ผู้เข้าใช้งาน", vUnit: "ท่าน",
+        swalSuccess: "บันทึกสำเร็จ", swalFinish: "ขอบคุณที่ร่วมทำแบบสอบถาม"
+      },
+      en: {
+        title: "Satisfaction Survey",
+        company: "Gammaco (Thailand) Co., Ltd.",
+        address: "122, 123 Moo 1, Ratchaphruek Rd, Bang Khanun, Bang Kruai, Nonthaburi 11130",
+        loading: "Loading data...",
+        labelComp: "Competition", labelVenue: "Venue", labelDate: "Date",
+        sec1: "1. Participant Profile",
+        q11: "1.1 Gender", optMale: "Male", optFemale: "Female", optNone: "Prefer not to say",
+        q12: "1.2 Age", optSelect: "- Please Select -",
+        age1: "Under 10", age2: "10-20 yrs", age3: "21-30 yrs", age4: "31-40 yrs", age5: "41-50 yrs", age6: "51+ yrs",
+        q13: "1.3 Status", st1: "Teacher/Coach", st2: "Student", st3: "General Public", st4: "Other",
+        sec2: "2. Satisfaction Feedback", ratingHint: "(5 = Excellent, 1 = Very Poor)",
+        q21: "2.1.1 Advance public relations period?",
+        q22: "2.1.2 Suitability of the venue?",
+        q23: "2.1.3 Suitability of the duration?",
+        q24: "2.1.4 Staff assistance and support?",
+        q25: "2.1.5 Overall satisfaction?",
+        q26: "2.2 Source of Information (Multiple)",
+        ch1: "Printed Media", ch2: "Internet / Social Media", ch3: "Sales Representative", ch4: "Other",
+        sec3: "3. Comments",
+        p1: "3.1 What you liked", p2: "3.2 Areas for improvement", p3: "3.3 Suggestions",
+        btnSave: "Submit Feedback", btnSaving: "Saving...",
+        reward1: "Reward Conditions", reward2: "Please capture this screen as evidence.", reward3: "(Only for participants at the event)",
+        vText: "Total Visitors", vUnit: "persons",
+        swalSuccess: "Success", swalFinish: "Thank you for your feedback!"
+      },
+      cn: {
+        title: "活动满意度调查表",
+        company: "Gammaco (泰国) 有限公司",
+        address: "122, 123 Moo 1, Ratchaphruek Rd, Bang Khanun, Bang Kruai, Nonthaburi 11130",
+        loading: "正在加载...",
+        labelComp: "比赛项目", labelVenue: "地点", labelDate: "日期",
+        sec1: "1. 基本信息",
+        q11: "1.1 性别", optMale: "男", optFemale: "女", optNone: "不便透露",
+        q12: "1.2 年龄", optSelect: "- 请选择 -",
+        age1: "10岁以下", age2: "10-20 岁", age3: "21-30 岁", age4: "31-40 岁", age5: "41-50 岁", age6: "51 岁及以上",
+        q13: "1.3 身份", st1: "教师/教练", st2: "学生", st3: "社会人士", st4: "其他",
+        sec2: "2. 满意度评价", ratingHint: "(5 = 非常满意, 1 = 非常不满意)",
+        q21: "2.1.1 活动宣传提前期是否充足？",
+        q22: "2.1.2 比赛场地是否合适？",
+        q23: "2.1.3 比赛时间安排是否合理？",
+        q24: "2.1.4 工作人员的服务态度？",
+        q25: "2.1.5 整体活动满意度？",
+        q26: "2.2 获知渠道 (多选)",
+        ch1: "印刷媒体 (海报/手册)", ch2: "网络 / 社交媒体", ch3: "销售人员", ch4: "其他",
+        sec3: "3. 意见与建议",
+        p1: "3.1 您印象深刻的亮点", p2: "3.2 需要改进的地方", p3: "3.3 您的建议",
+        btnSave: "提交信息", btnSaving: "正在保存...",
+        reward1: "领奖条件", reward2: "请截屏保存作为领奖凭证", reward3: "(仅限现场参与者)",
+        vText: "访问人数", vUnit: "人",
+        swalSuccess: "提交成功", swalFinish: "感谢您的参与！"
+      }
+    };
+
+    function changeLang(lang) {
+      currentLang = lang;
+      $('.lang-btn').removeClass('active');
+      $(`#btn-${lang}`).addClass('active');
+
+      const d = dict[lang];
+      $('#text-title').text(d.title);
+      $('#text-company').text(d.company);
+      $('#text-address').text(d.address);
+      $('#text-loading1, #text-loading2, #text-loading3').text(d.loading);
+      $('#label-comp').text(d.labelComp);
+      $('#label-venue').text(d.labelVenue);
+      $('#label-date').text(d.labelDate);
+      $('#sec-1').text(d.sec1);
+      $('#q-1-1').text(d.q11);
+      $('#opt-male').text(d.optMale); $('#opt-female').text(d.optFemale); $('#opt-none').text(d.optNone);
+      $('#q-1-2').text(d.q12); $('#opt-select').text(d.optSelect);
+      $('#age-1').text(d.age1); $('#age-2').text(d.age2); $('#age-3').text(d.age3); $('#age-4').text(d.age4); $('#age-5').text(d.age5); $('#age-6').text(d.age6);
+      $('#q-1-3').text(d.q13); $('#st-1').text(d.st1); $('#st-2').text(d.st2); $('#st-3').text(d.st3); $('#st-4').text(d.st4);
+      $('#sec-2').text(d.sec2); $('#rating-hint').text(d.ratingHint);
+      $('#q-2-1').text(d.q21); $('#q-2-2').text(d.q22); $('#q-2-3').text(d.q23); $('#q-2-4').text(d.q24); $('#q-2-5').text(d.q25);
+      $('#q-2-6').text(d.q26);
+      $('#ch-1').text(d.ch1); $('#ch-2').text(d.ch2); $('#ch-3').text(d.ch3); $('#ch-4').text(d.ch4);
+      $('#sec-3').text(d.sec3);
+      $('#data11').attr('placeholder', d.p1); $('#data12').attr('placeholder', d.p2); $('#data13').attr('placeholder', d.p3);
+      $('#btn-save').text(d.btnSave); $('#btn-saving').text(d.btnSaving);
+      $('#reward-1').text(d.reward1); $('#reward-2').text(d.reward2); $('#reward-3').text(d.reward3);
+      $('#v-text').text(d.vText); $('#v-unit').text(d.vUnit);
+    }
 
     window.onload = () => {
       fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => userIP = d.ip).catch(() => {});
@@ -230,6 +380,7 @@
       fetch(`${WEB_APP_URL}?action=updateVisitors`).then(r => r.json()).then(d => {
         document.getElementById("visitorCount").innerText = d.count.toLocaleString();
       });
+      changeLang('th'); // Default to Thai
     };
 
     function showLastRowData(d) {
@@ -264,7 +415,7 @@
       };
       fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(obj) })
       .then(() => {
-        Swal.fire({ icon: 'success', title: 'บันทึกสำเร็จ', showConfirmButton: false, timer: 1500 }).then(generateCode);
+        Swal.fire({ icon: 'success', title: dict[currentLang].swalSuccess, showConfirmButton: false, timer: 1500 }).then(generateCode);
       });
     }
 
@@ -272,7 +423,7 @@
       const code = Math.floor(100000 + Math.random() * 900000);
       fetch(`${WEB_APP_URL}?action=saveCode&code=${code}`, { mode: 'no-cors' });
       Swal.fire({ title: 'Lucky Code', html: `<h2 style="color:red">${code}</h2>`, icon: 'info' }).then(() => {
-        document.body.innerHTML = `<div style="display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;background:white;"><h1>ขอบคุณที่ร่วมทำแบบสอบถาม</h1><h3>Thank you.</h3></div>`;
+        document.body.innerHTML = `<div style="display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;background:white;text-align:center;padding:20px;"><h1>${dict[currentLang].swalFinish}</h1></div>`;
       });
     }
   </script>
