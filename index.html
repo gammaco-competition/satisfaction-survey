@@ -34,7 +34,6 @@
       text-align: center;
     }
 
-    /* สไตล์ปุ่มเปลี่ยนภาษาใหม่ */
     .lang-container {
       display: flex;
       justify-content: flex-end;
@@ -137,8 +136,6 @@
       </div>
 
       <div class="p-4 p-md-5">
-        
-        <!-- Language Switcher อยู่เหนือ Version Info -->
         <div class="lang-container">
           <span class="lang-btn active" onclick="changeLang('th')" id="btn-th" title="ไทย">🇹🇭</span>
           <span class="lang-btn" onclick="changeLang('en')" id="btn-en" title="English">🇺🇸</span>
@@ -212,12 +209,12 @@
           </div>
 
           <div class="rating-container px-2">
-             <p class="small text-danger fw-bold" id="rating-hint">(5 = มากที่สุด, 1 = น้อยที่สุด)</p>
-             <div class="row rating-row align-items-center"><div class="col-md-7"><p class="mb-0 fw-bold" id="q-2-1">2.1.1 ระยะเวลาในการประชาสัมพันธ์กิจกรรมล่วงหน้า ?</p></div><div class="col-md-5 d-flex justify-content-between"><input type="radio" name="data5" value="5" required> 5 <input type="radio" name="data5" value="4"> 4 <input type="radio" name="data5" value="3"> 3 <input type="radio" name="data5" value="2"> 2 <input type="radio" name="data5" value="1"> 1</div></div>
-             <div class="row rating-row align-items-center"><div class="col-md-7"><p class="mb-0 fw-bold" id="q-2-2">2.1.2 ความเหมาะสมของสถานที่จัดการแข่งขัน ?</p></div><div class="col-md-5 d-flex justify-content-between"><input type="radio" name="data6" value="5" required> 5 <input type="radio" name="data6" value="4"> 4 <input type="radio" name="data6" value="3"> 3 <input type="radio" name="data6" value="2"> 2 <input type="radio" name="data6" value="1"> 1</div></div>
-             <div class="row rating-row align-items-center"><div class="col-md-7"><p class="mb-0 fw-bold" id="q-2-3">2.1.3 ความเหมาะสมของระยะเวลาจัดการแข่งขัน ?</p></div><div class="col-md-5 d-flex justify-content-between"><input type="radio" name="data7" value="5" required> 5 <input type="radio" name="data7" value="4"> 4 <input type="radio" name="data7" value="3"> 3 <input type="radio" name="data7" value="2"> 2 <input type="radio" name="data7" value="1"> 1</div></div>
-             <div class="row rating-row align-items-center"><div class="col-md-7"><p class="mb-0 fw-bold" id="q-2-4">2.1.4 การให้ความช่วยเหลือของเจ้าหน้าที่ ?</p></div><div class="col-md-5 d-flex justify-content-between"><input type="radio" name="data8" value="5" required> 5 <input type="radio" name="data8" value="4"> 4 <input type="radio" name="data8" value="3"> 3 <input type="radio" name="data8" value="2"> 2 <input type="radio" name="data8" value="1"> 1</div></div>
-             <div class="row rating-row align-items-center"><div class="col-md-7"><p class="mb-0 fw-bold" id="q-2-5">2.1.5 การจัดกิจกรรมโดยภาพรวม ?</p></div><div class="col-md-5 d-flex justify-content-between"><input type="radio" name="data9" value="5" required> 5 <input type="radio" name="data9" value="4"> 4 <input type="radio" name="data9" value="3"> 3 <input type="radio" name="data9" value="2"> 2 <input type="radio" name="data9" value="1"> 1</div></div>
+            <p class="small text-danger fw-bold" id="rating-hint">(5 = มากที่สุด, 1 = น้อยที่สุด)</p>
+            <div class="row rating-row align-items-center"><div class="col-md-7"><p class="mb-0 fw-bold" id="q-2-1">2.1.1 ระยะเวลาในการประชาสัมพันธ์กิจกรรมล่วงหน้า ?</p></div><div class="col-md-5 d-flex justify-content-between"><input type="radio" name="data5" value="5" required> 5 <input type="radio" name="data5" value="4"> 4 <input type="radio" name="data5" value="3"> 3 <input type="radio" name="data5" value="2"> 2 <input type="radio" name="data5" value="1"> 1</div></div>
+            <div class="row rating-row align-items-center"><div class="col-md-7"><p class="mb-0 fw-bold" id="q-2-2">2.1.2 ความเหมาะสมของสถานที่จัดการแข่งขัน ?</p></div><div class="col-md-5 d-flex justify-content-between"><input type="radio" name="data6" value="5" required> 5 <input type="radio" name="data6" value="4"> 4 <input type="radio" name="data6" value="3"> 3 <input type="radio" name="data6" value="2"> 2 <input type="radio" name="data6" value="1"> 1</div></div>
+            <div class="row rating-row align-items-center"><div class="col-md-7"><p class="mb-0 fw-bold" id="q-2-3">2.1.3 ความเหมาะสมของระยะเวลาจัดการแข่งขัน ?</p></div><div class="col-md-5 d-flex justify-content-between"><input type="radio" name="data7" value="5" required> 5 <input type="radio" name="data7" value="4"> 4 <input type="radio" name="data7" value="3"> 3 <input type="radio" name="data7" value="2"> 2 <input type="radio" name="data7" value="1"> 1</div></div>
+            <div class="row rating-row align-items-center"><div class="col-md-7"><p class="mb-0 fw-bold" id="q-2-4">2.1.4 การให้ความช่วยเหลือของเจ้าหน้าที่ ?</p></div><div class="col-md-5 d-flex justify-content-between"><input type="radio" name="data8" value="5" required> 5 <input type="radio" name="data8" value="4"> 4 <input type="radio" name="data8" value="3"> 3 <input type="radio" name="data8" value="2"> 2 <input type="radio" name="data8" value="1"> 1</div></div>
+            <div class="row rating-row align-items-center"><div class="col-md-7"><p class="mb-0 fw-bold" id="q-2-5">2.1.5 การจัดกิจกรรมโดยภาพรวม ?</p></div><div class="col-md-5 d-flex justify-content-between"><input type="radio" name="data9" value="5" required> 5 <input type="radio" name="data9" value="4"> 4 <input type="radio" name="data9" value="3"> 3 <input type="radio" name="data9" value="2"> 2 <input type="radio" name="data9" value="1"> 1</div></div>
           </div>
 
           <div class="mt-4 px-2">
@@ -263,6 +260,7 @@
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwInfkYkd_ACkGwmxutEXPKFC9LKEIzB_FUPq02TRKK3_-ceVOKTYxx_Xz563AgKP_D/exec";
     let userIP = "Unknown";
     let currentLang = "th";
+    let lineUserId = "Unknown"; // เก็บ userId ไว้ตรงนี้
 
     const dict = {
       th: {
@@ -376,6 +374,11 @@
     }
 
     window.onload = () => {
+      // 1. ดึง userId จาก URL
+      const urlParams = new URLSearchParams(window.location.search);
+      lineUserId = urlParams.get('userId') || "Unknown";
+
+      // 2. ดึงข้อมูลประกอบหน้าเว็บ
       fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => userIP = d.ip).catch(() => {});
       fetch(`${WEB_APP_URL}?action=getLatest`).then(r => r.json()).then(showLastRowData);
       fetch(`${WEB_APP_URL}?action=updateVisitors`).then(r => r.json()).then(d => {
@@ -422,8 +425,15 @@
 
     function generateCode() {
       const code = Math.floor(100000 + Math.random() * 900000);
-      fetch(`${WEB_APP_URL}?action=saveCode&code=${code}`, { mode: 'no-cors' });
-      Swal.fire({ title: 'Lucky Code', html: `<h2 style="color:red">${code}</h2>`, icon: 'info' }).then(() => {
+      
+      // บันทึก Lucky Code พร้อมส่ง userId ไปด้วย
+      fetch(`${WEB_APP_URL}?action=saveCode&code=${code}&userId=${lineUserId}`, { mode: 'no-cors' });
+      
+      Swal.fire({ 
+        title: 'Lucky Code', 
+        html: `<h2 style="color:red">${code}</h2>`, 
+        icon: 'info' 
+      }).then(() => {
         document.body.innerHTML = `<div style="display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;background:white;text-align:center;padding:20px;"><h1>${dict[currentLang].swalFinish}</h1></div>`;
       });
     }
