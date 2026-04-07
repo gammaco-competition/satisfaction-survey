@@ -261,6 +261,7 @@
     let userIP = "Unknown";
     let currentLang = "th";
     let lineUserId = "Unknown"; // เก็บ userId ไว้ตรงนี้
+    let lineUserName = "Unknown";
 
     const dict = {
       th: {
@@ -376,7 +377,8 @@
     window.onload = () => {
       // 1. ดึง userId จาก URL
       const urlParams = new URLSearchParams(window.location.search);
-      lineUserId = urlParams.get('userId') || "Unknown";
+        lineUserId = urlParams.get('userId') || "Unknown";
+        lineUserName = urlParams.get('userName') || "Unknown"; // ดึงชื่อจาก URL (ถ้ามี)
 
       // 2. ดึงข้อมูลประกอบหน้าเว็บ
       fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => userIP = d.ip).catch(() => {});
@@ -427,7 +429,7 @@
       const code = Math.floor(100000 + Math.random() * 900000);
       
       // บันทึก Lucky Code พร้อมส่ง userId ไปด้วย
-      fetch(`${WEB_APP_URL}?action=saveCode&code=${code}&userId=${lineUserId}`, { mode: 'no-cors' });
+      fetch(`${WEB_APP_URL}?action=saveCode&code=${code}&userId=${lineUserId}&userName=${encodeURIComponent(lineUserName)}`, { mode: 'no-cors' });
       
       Swal.fire({ 
         title: 'Lucky Code', 
