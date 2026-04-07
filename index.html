@@ -143,7 +143,7 @@
         </div>
 
         <div class="version-info">
-          Version 1.6.1 (Updated: 2026-04-07)
+          Version 1.6.4 (Updated: 2026-04-07)
         </div>
 
         <form id="myForm" onsubmit="submitForm(event)">
@@ -260,7 +260,9 @@
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwInfkYkd_ACkGwmxutEXPKFC9LKEIzB_FUPq02TRKK3_-ceVOKTYxx_Xz563AgKP_D/exec";
     let userIP = "Unknown";
     let currentLang = "th";
-    let lineUserId = "Unknown"; // เก็บ userId ไว้ตรงนี้
+    
+    // --- จุดที่แก้ไข: ประกาศตัวแปรไว้ด้านบนสุดเพื่อให้ทุกฟังก์ชันเข้าถึงได้ ---
+    let lineUserId = "Unknown"; 
     let lineUserName = "Unknown";
 
     const dict = {
@@ -375,12 +377,13 @@
     }
 
     window.onload = () => {
-      // 1. ดึง userId จาก URL
+      // --- จุดที่แก้ไข: ดึงค่าจาก URL ให้เรียบร้อยก่อนทำอย่างอื่น ---
       const urlParams = new URLSearchParams(window.location.search);
-        lineUserId = urlParams.get('userId') || "Unknown";
-        lineUserName = urlParams.get('userName') || "Unknown"; // ดึงชื่อจาก URL (ถ้ามี)
+      lineUserId = urlParams.get('userId') || "Unknown";
+      lineUserName = urlParams.get('userName') || "Unknown";
 
-      // 2. ดึงข้อมูลประกอบหน้าเว็บ
+      console.log("Detected User:", lineUserId, lineUserName); // ตรวจสอบใน Console (F12) ว่าดึงค่าได้ไหม
+
       fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => userIP = d.ip).catch(() => {});
       fetch(`${WEB_APP_URL}?action=getLatest`).then(r => r.json()).then(showLastRowData);
       fetch(`${WEB_APP_URL}?action=updateVisitors`).then(r => r.json()).then(d => {
@@ -410,14 +413,22 @@
       e.preventDefault();
       $('#btn1').hide(); $('#btn2').show();
       const obj = {
-        data1: $('#colA').val(), data2: $('input[name="data2"]:checked').val(),
-        data3: $('#data3').val(), data4: $('input[name="data4"]:checked').val(),
-        data5: $('input[name="data5"]:checked').val(), data6: $('input[name="data6"]:checked').val(),
-        data7: $('input[name="data7"]:checked').val(), data8: $('input[name="data8"]:checked').val(),
+        data1: $('#colA').val(), 
+        data2: $('input[name="data2"]:checked').val(),
+        data3: $('#data3').val(), 
+        data4: $('input[name="data4"]:checked').val(),
+        data5: $('input[name="data5"]:checked').val(), 
+        data6: $('input[name="data6"]:checked').val(),
+        data7: $('input[name="data7"]:checked').val(), 
+        data8: $('input[name="data8"]:checked').val(),
         data9: $('input[name="data9"]:checked').val(), 
         data10: $('input[name="data10"]:checked').map((i, el) => $(el).val()).get().join(','),
-        data11: $('#data11').val(), data12: $('#data12').val(), data13: $('#data13').val(),
-        user_ip: userIP
+        data11: $('#data11').val(), 
+        data12: $('#data12').val(), 
+        data13: $('#data13').val(),
+        user_ip: userIP,
+        // --- เพิ่มเติม: บันทึก ID ลงในฐานข้อมูลหลัก (Data) ไปด้วยเลยป้องกันพลาด ---
+        line_id: lineUserId 
       };
       fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(obj) })
       .then(() => {
@@ -428,9 +439,12 @@
     function generateCode() {
       const code = Math.floor(100000 + Math.random() * 900000);
       
-      // บันทึก Lucky Code พร้อมส่ง userId ไปด้วย
-      fetch(`${WEB_APP_URL}?action=saveCode&code=${code}&userId=${lineUserId}&userName=${encodeURIComponent(lineUserName)}`, { mode: 'no-cors' });
+      // บันทึก Lucky Code พร้อมส่ง userId และ userName ไปที่ GAS
+      const saveUrl = `${WEB_APP_URL}?action=saveCode&code=${code}&userId=${lineUserId}&userName=${encodeURIComponent(lineUserName)}`;
       
+      fetch(saveUrl, { mode: 'no-cors' })
+      .then(() => console.log("Code saved to sheets"));
+
       Swal.fire({ 
         title: 'Lucky Code', 
         html: `<h2 style="color:red">${code}</h2>`, 
