@@ -260,8 +260,6 @@
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwInfkYkd_ACkGwmxutEXPKFC9LKEIzB_FUPq02TRKK3_-ceVOKTYxx_Xz563AgKP_D/exec";
     let userIP = "Unknown";
     let currentLang = "th";
-    
-    // --- จุดที่แก้ไข: ประกาศตัวแปรไว้ด้านบนสุดเพื่อให้ทุกฟังก์ชันเข้าถึงได้ ---
     let lineUserId = "Unknown"; 
     let lineUserName = "Unknown";
 
@@ -288,7 +286,6 @@
         sec3: "3. ข้อคิดเห็น",
         p1: "3.1 จุดเด่นที่ท่านประทับใจ", p2: "3.2 จุดที่ควรปรับปรุง", p3: "3.3 ข้อเสนอแนะ",
         btnSave: "บันทึกข้อมูล", btnSaving: "กำลังบันทึก...",
-        // reward1: "เงื่อนไขการรับรางวัล", reward2: "โปรดบันทึกหน้าจอไว้เป็นหลักฐานเพื่อรับรางวัล", reward3: "(ขอสงวนสิทธิสำหรับผู้ที่อยู่ภายในงานเท่านั้น)",
         vText: "ผู้เข้าใช้งาน", vUnit: "ท่าน",
         swalSuccess: "บันทึกสำเร็จ", swalFinish: "ขอบคุณที่ร่วมทำแบบสอบถาม"
       },
@@ -314,7 +311,6 @@
         sec3: "3. Comments",
         p1: "3.1 What you liked", p2: "3.2 Areas for improvement", p3: "3.3 Suggestions",
         btnSave: "Submit Feedback", btnSaving: "Saving...",
-        // reward1: "Reward Conditions", reward2: "Please capture this screen as evidence.", reward3: "(Only for participants at the event)",
         vText: "Total Visitors", vUnit: "persons",
         swalSuccess: "Success", swalFinish: "Thank you for your feedback!"
       },
@@ -340,7 +336,6 @@
         sec3: "3. 意见与建议",
         p1: "3.1 您印象深刻的亮点", p2: "3.2 需要改进的地方", p3: "3.3 您的建议",
         btnSave: "提交信息", btnSaving: "正在保存...",
-        // reward1: "领奖条件", reward2: "请截屏保存作为领奖凭证", reward3: "(仅限现场参与者)",
         vText: "访问人数", vUnit: "人",
         swalSuccess: "提交成功", swalFinish: "感谢您的参与！"
       }
@@ -350,7 +345,6 @@
       currentLang = lang;
       $('.lang-btn').removeClass('active');
       $(`#btn-${lang}`).addClass('active');
-
       const d = dict[lang];
       $('#text-title').text(d.title);
       $('#text-company').text(d.company);
@@ -372,19 +366,13 @@
       $('#sec-3').text(d.sec3);
       $('#data11').attr('placeholder', d.p1); $('#data12').attr('placeholder', d.p2); $('#data13').attr('placeholder', d.p3);
       $('#btn-save').text(d.btnSave); $('#btn-saving').text(d.btnSaving);
-      $('#reward-1').text(d.reward1); $('#reward-2').text(d.reward2); $('#reward-3').text(d.reward3);
       $('#v-text').text(d.vText); $('#v-unit').text(d.vUnit);
     }
 
     window.onload = () => {
       const urlParams = new URLSearchParams(window.location.search);
-      
-      // แก้ไข: ดึงค่าให้ตรงกับที่ส่งมาจาก LINE Bot (Bot ส่ง userProfile)
       lineUserId = urlParams.get('userId') || "Unknown";
       lineUserName = urlParams.get('userProfile') || "Unknown"; 
-
-      console.log("Detected User:", lineUserId, lineUserName);
-
       fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => userIP = d.ip).catch(() => {});
       fetch(`${WEB_APP_URL}?action=getLatest`).then(r => r.json()).then(showLastRowData);
       fetch(`${WEB_APP_URL}?action=updateVisitors`).then(r => r.json()).then(d => {
@@ -412,7 +400,8 @@
 
     async function submitForm(e) {
       e.preventDefault();
-      $('#btn1').hide(); $('#btn2').show();
+      $('#btn1').hide(); 
+      $('#btn2').show();
       const obj = {
         data1: $('#colA').val(), 
         data2: $('input[name="data2"]:checked').val(),
@@ -428,31 +417,34 @@
         data12: $('#data12').val(), 
         data13: $('#data13').val(),
         user_ip: userIP,
-        line_id: lineUserId  // ส่งไอดีเข้าชีต Data หลักด้วย
+        line_id: lineUserId 
       };
       
       fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(obj) })
       .then(() => {
-        Swal.fire({ icon: 'success', title: dict[currentLang].swalSuccess, showConfirmButton: false, timer: 1500 }).then(generateCode);
+        // 1. บันทึก Lucky Code เบื้องหลัง (ทำงานเงียบๆ)
+        generateCodeInBackground(); 
+
+        // 2. แสดงแจ้งเตือนสำเร็จแล้วข้ามไปหน้าขอบคุณทันที
+        Swal.fire({ 
+          icon: 'success', 
+          title: dict[currentLang].swalSuccess, 
+          showConfirmButton: false, 
+          timer: 1000 
+        }).then(() => {
+          // เปลี่ยนหน้าจอเป็นข้อความขอบคุณ
+          document.body.innerHTML = `<div style="display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;background:white;text-align:center;padding:20px;"><h1>${dict[currentLang].swalFinish}</h1></div>`;
+        });
       });
     }
 
-    function generateCode() {
+    function generateCodeInBackground() {
       const code = Math.floor(100000 + Math.random() * 900000);
-      
-      // ส่งค่าไปยัง GAS: userId และ userName (ตรงตามที่ doGet ใน GAS รอรับ)
       const saveUrl = `${WEB_APP_URL}?action=saveCode&code=${code}&userId=${lineUserId}&userName=${encodeURIComponent(lineUserName)}`;
       
+      // ส่งข้อมูลบันทึก โดยไม่ขัดจังหวะผู้ใช้งาน
       fetch(saveUrl, { mode: 'no-cors' })
-      .then(() => console.log("Code saved successfully"));
-
-      Swal.fire({ 
-        title: 'Lucky Code', 
-        html: `<h2 style="color:red">${code}</h2>`, 
-        icon: 'info' 
-      }).then(() => {
-        document.body.innerHTML = `<div style="display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;background:white;text-align:center;padding:20px;"><h1>${dict[currentLang].swalFinish}</h1></div>`;
-      });
+      .then(() => console.log("Lucky Code saved in background."));
     }
   </script>
 </body>
